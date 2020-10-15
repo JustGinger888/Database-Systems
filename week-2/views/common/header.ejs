@@ -1,0 +1,52 @@
+<!-- Head -->
+
+<!--Import Google Dependencies-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!--Import Google Dependencies-->
+
+<style>
+  nav .badge {
+    position: relative;
+    top: 20px;
+    right: 20px;
+  }
+</style>
+<!-- Head -->
+
+<!-- Body -->
+<div class="navbar-fixed">
+  <nav class="nav-wrapper indigo">
+    <div class="container">
+      <a href="index.html" class="brand-logo">COM519</a>
+      <a href="#" class="sidenav-trigger" data-target="mobile-links">
+        <i class="material-icons">menu</i>
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="">Home</a></li>
+        <li><a href="">Search</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a href="" class="btn-floating indigo darken-4 z-depth-0"><i class="material-icons">add</i></a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<ul class="sidenav" id="mobile-links" style="transform: translateX(-105%);">
+  <li><a href="">Home</a></li>
+  <li><a href="">Search</a></li>
+  <li><a href="">Contact</a></li>
+  <li><a href="">Create</a></li>
+</ul>
+<!-- Body -->
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('.sidenav').sidenav();
+    $('.modal').modal();
+  });
+</script>
+<!-- Compiled and minified JavaScript -->

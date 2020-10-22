@@ -1,0 +1,112 @@
+use("wine");
+
+// How many records, in total, are there in the entire tastings collection?
+db.tastings.find({}).count();
+
+//How many wine records exist that originated from Italy where the price is greater than 80?
+db.tastings.find({country: "Italy", price: {$gt:80}}).sort({price: -1}).pretty();
+
+//How many wine records exist that originated from France or Italy, where the price is greater than 60? Can you use a $or and a $and together to achieve this.
+db.tastings.find({$and:[{$or:[{country: "France"},{country: "Italy"}]},{price: {$gt:60}}]}).count();
+
+/Name of each wine taster and the count of the total tastings they have conducted?
+db.tastings.aggregate(
+    [
+        {
+            $group : 
+            { 
+                _id : "$taster_name" ,
+               count: { $sum: 1 }
+            }
+        }
+    ]
+)
+
+//How many different regions are there?
+db.tastings.aggregate(
+    [
+        {
+            $group : 
+            { 
+                _id : "$region_1",
+            }
+        },
+        {
+            $count: "regions"
+        }
+    ]
+)
+
+
+//Which Wine has been tasted the most? - "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" which has been tasted 11 times.
+db.tastings.aggregate(
+    [
+        {
+            $group : 
+            { 
+                _id : "$title" ,
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort : { count: -1 }
+        }
+    ]
+)
+
+//Can you update the price "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" to 11?
+db.tastings.updateMany(
+    { title: "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" }, 
+    [
+        { 
+            $set: 
+            { 
+                price: 11 
+            }
+        }
+    ]
+)
+
+db.tastings.find({title: "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" });
+
+
+//Can you figure out how to to move regions to an embedded array on each document in the tastings collection. After completion, you records should all look like this:
+db.tastings.updateMany(
+    {},
+    [
+        { 
+            $set: 
+            { 
+                regions: ["$region_1", "$region_2", "$province", "$country"] 
+            }
+        },
+        { 
+            $unset: [ "region_1", "region_2", "province", "country" ] 
+        }
+    ]
+);
+
+//db.tastings.find({title: "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" });
+
+
+//output the details of each wine taster (e.g. name, twitter handle and number of tastings) to a new collection called tasters
+
+db.tastings.updateMany(
+    {},
+    [
+        {
+            $set: {
+                tester: 
+                { 
+                    "name" : "$taster_name" ,
+                    "twitter" : "$taster_twitter_handle",
+                }
+            }
+        },
+        { 
+            $unset: [ "taster_name", "taster_twitter_handle"] 
+        }
+    ]
+);
+
+//db.tastings.find({title: "Gloria Ferrer NV Sonoma Brut Sparkling (Sonoma County)" });

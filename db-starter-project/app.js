@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const mongoose = require("mongoose");
+const tasterController = require("./controllers/taster");
 
 const { WEB_PORT, MONGODB_URI } = process.env;
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
@@ -15,9 +16,7 @@ mongoose.connection.on("error", (err) => {
   process.exit();
 });
 
-const tasterController = require("./controllers/taster");
-app.get("/tasters", tasterController.list);
-app.get("/tasters/delete/:id", tasterController.delete);
+
 
 app.set("view engine", "ejs");
 
@@ -27,9 +26,8 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/tasters", (req, res) => {
-  res.render("tasters");
-});
+app.get("/tasters", tasterController.list);
+app.get("/tasters/delete/:id", tasterController.delete);
 
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);
